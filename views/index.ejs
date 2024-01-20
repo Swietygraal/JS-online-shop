@@ -1,28 +1,9 @@
-<!-- public/index.html -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Piercingownia</title>
-  <link rel="stylesheet" href="styles.css">
+<%- include('head.ejs') %>
 </head>
-
 <body>
-
+  <%- include('navigation.ejs') %>
   <div class="scrollable-container">
     <main>
-      <a href="/">
-        <img src="graphics/logo.svg" alt="Online Shop Logo" id="logo">
-      </a>
-      <nav>
-        <ul>
-          <li><a href="/konto"><img src="graphics/account.png" id="account"></a></li>
-          <li><a href="/koszyk"><img src="graphics/basket.png" id="basket"></a></li>
-          <li><a href="/admin"><img src="graphics/administrator.png" id="admin"></a></li>
-        </ul>
-      </nav>
       <section id="start">
         <img src="graphics/dziewczyna.jpg" id="foto">
         <h2 id="start_big_text">SPRZEDAJEMY<br>KOLCZYKI.
