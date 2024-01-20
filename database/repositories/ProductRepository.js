@@ -4,12 +4,12 @@ class ProductRepository {
     constructor(conn) {
         this.conn = conn;
     }
-    async retrieve(name = null) {
+    async retrieve(id = null) {
         try {
             var req = new mssql.Request(this.conn);
-            if (name) req.input('name', name);
-            var res = await req.query('select * from Parent' + (name ? 'where Nazwa = @name' : ''));
-            return name ? res.recordset[0] : res.recordset;
+            if (id) req.input('id', id);
+            var res = await req.query('select * from Produkt' + (id ? 'where ID = @id' : ''));
+            return id ? res.recordset[0] : res.recordset;
         }
         catch (err) {
             console.log(err);
@@ -93,3 +93,5 @@ class ProductRepository {
         }
     }
 }
+
+module.exports = ProductRepository;

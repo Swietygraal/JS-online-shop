@@ -1,0 +1,28 @@
+<%- include('head.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body>
+    <%- include('navigation.ejs') %>
+    <main>
+        <% if (cart && cart.length > 0) { %>
+            <ul class="cart-item-list">
+                <% cart.forEach(item => { %>
+                    <li class="cart-item">
+                        <img src=`${item.Zdjecie}` alt=`${item.Nazwa}`>
+                        <h1><%= item.Nazwa %></h1>
+                        <h2><%= item.Cena %></h2>
+                        <form action="/cart-delete-item" method="POST">
+                           <input type="hidden" value="<%= item.ID %>" name="product.ID">
+                           <button class="button delete" type="submit">Usuń</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+            <h1>Suma: <%= total %></h1>
+        <% } else { %>
+            <div class="cart-empty">Twój koszyk jest pusty.</div>
+        <% } %>
+    </main>
+</body>
+</html>

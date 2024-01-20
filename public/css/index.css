@@ -1,0 +1,40 @@
+#start{
+    position: absolute;
+    left: 200px;
+    top: 250px;
+}
+
+#foto{
+    position: absolute;
+    height: 600px;
+    width: auto;
+    left: 300px;
+    top: -100px;
+    z-index: -1;
+}
+
+#start_big_text{
+    position: relative;
+    font-size: 50px; 
+    top: 20px;
+    z-index: 1;
+}
+
+#click_rctg{
+    width: 90px;
+    height: 40px;
+}
+
+#kliknij{
+    position: relative;
+    color: black;
+    user-select: none;
+    text-decoration: none;
+    top: -52px;
+    left: 10px;
+    font-size: small;
+}
+
+main {
+    padding: 20px;
+}
