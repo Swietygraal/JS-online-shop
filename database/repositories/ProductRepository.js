@@ -4,12 +4,80 @@ class ProductRepository {
     constructor(conn) {
         this.conn = conn;
     }
-    async retrieve(id = null) {
+    async retrieve(name) {
+        try {
+            var req = new mssql.Request(this.conn);
+            if (name) req.input('name', name);
+            var res = await req.query('select * from Produkt' + (name ? 'where Nazwa = @name' : ''));
+            return name ? res.recordset[0] : res.recordset;
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async retrieveID(id) {
         try {
             var req = new mssql.Request(this.conn);
             if (id) req.input('id', id);
-            var res = await req.query('select * from Produkt' + (id ? 'where ID = @id' : ''));
-            return id ? res.recordset[0] : res.recordset;
+            else return;
+            var res = await req.query('select * from Produkt where ID = @id');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async getCategory(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select Kategorie.Kategoria from Produkt JOIN Kategorie on Produkt.Kategoria = Kategorie.ID');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async getColor(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.Kolor = Kolor.ID');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async getZircColor(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.[Kolor Cyrkonii] = Kolor.ID');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async getMaterial(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select Materialy.Material from Produkt JOIN Materialy on Produkt.Material = Materialy.ID');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    async getModel(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select Modele.Model from Produkt JOIN Modele on Produkt.Model = Modele.ID');
+            return res.recordset[0];
         }
         catch (err) {
             console.log(err);
