@@ -1,0 +1,22 @@
+<%- include('head.ejs') %>
+<%# TODO: css dla panelu admina %>
+</head>
+
+<body>
+    <%- include('navigation.ejs') %>
+    <main>
+        <h1>Zarządzanie produktami</h1>
+        <%# w sumie może by jednak zrobić tylko listy, a dodawanie, usuwanie itd. jako guziki %>
+        <p><a href="/add_product">Dodaj produkt</a></p>
+        <p><a href="/edit_product">Edytuj produkt</a></p>
+        <p><a href="/delete_product">Usuń produkt</a></p>
+        <p><a href="/list_products">Zobacz listę produktów</a></p>
+        <h1>Zarządzanie użytkownikami</h1>
+        <p><a href="/delete_user">Usuń użytkownika</a></p>
+        <h1>Zarządzanie zamówieniami</h1>
+        <p><a href="/change_order_status">Zmień status zamówienia</a></p>
+        <p><a href="/orders">Zobacz listę zamówień</a></p>
+        <p><a href="/settings">Ustawienia</a></p>
+    </main>
+</body>
+</html>
