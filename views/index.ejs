@@ -1,27 +1,45 @@
 <%- include('head.ejs') %>
-<link rel="stylesheet" href="/css/index.css">
-</head>
-<body>
-  <%- include('navigation.ejs') %>
-  <div class="scrollable-container">
-    <main>
-      <section id="start">
-        <img src="graphics/dziewczyna.jpg" id="foto">
-        <h2 id="start_big_text">SPRZEDAJEMY<br>KOLCZYKI.
-          <br> <span style="color: #C43333;">LEPIEJ.</span>
-        </h2>
-        <p>Piercingownia rozwija się dzięki Tobie! Jeżeli jest coś, co
-          <br>moglibyśmy usprawnić, daj nam znać na facebooku 💂🏼‍♀️
-        </p>
-        <a href="https://www.facebook.com/piercingownia">
-          <img src="graphics/rctg.png" id="click_rctg"></a>
-        <p><a href="https://www.facebook.com/piercingownia" id="kliknij">
-            <b>kliknij tutaj</b>
-          </a></p>
-      </section>
-    </main>
-  </div>
+  <link rel="stylesheet" href="/css/index.css">
+  </head>
 
-</body>
+  <body>
+    <%- include('navigation.ejs') %>
+      <div class="scrollable-container">
+        <main>
+          <section id="start">
+            <img src="graphics/dziewczyna.jpg" id="foto">
+            <h2 id="start_big_text">SPRZEDAJEMY<br>KOLCZYKI.
+              <br> <span style="color: #C43333;">LEPIEJ.</span>
+            </h2>
+            <p>Piercingownia rozwija się dzięki Tobie! Jeżeli jest coś, co
+              <br>moglibyśmy usprawnić, daj nam znać na facebooku 💂🏼‍♀️
+            </p>
+            <a href="https://www.facebook.com/piercingownia">
+              <img src="graphics/rctg.png" id="click_rctg"></a>
+            <p><a href="https://www.facebook.com/piercingownia" id="kliknij">
+                <b>kliknij tutaj</b>
+              </a></p>
+          </section>
+          <div class="product-list">
+            <% products.forEach(product=> { %>
+              <a href="/produkt/<%= product.ID %>">
+                <div class="product-container">
+                  <img src="data:image/jpeg;base64,<%= Buffer.from(product.Zdjecie).toString('base64') %>"
+                    alt="<%= product.Nazwa %> Photo">
+                  <h2 id="nazwa">
+                    <%= product.Nazwa %>
+                  </h2>
+                  <p id="cena">
+                    <%= product.Cena + 'zł' %>
+                  </p>
+              </a>
+          </div>
+          <% }); %>
+      </div>
 
-</html>
+      </main>
+      </div>
+
+  </body>
+
+  </html>

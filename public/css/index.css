@@ -1,31 +1,30 @@
-#start{
+#start {
     position: absolute;
-    left: 200px;
-    top: 250px;
+    left: 15%;
+    top: 20%;
 }
 
-#foto{
+#foto {
     position: absolute;
-    height: 600px;
+    height: 140%;
     width: auto;
-    left: 300px;
-    top: -100px;
+    left: 50%;
     z-index: -1;
 }
 
-#start_big_text{
+#start_big_text {
     position: relative;
-    font-size: 50px; 
+    font-size: 50px;
     top: 20px;
     z-index: 1;
 }
 
-#click_rctg{
+#click_rctg {
     width: 90px;
     height: 40px;
 }
 
-#kliknij{
+#kliknij {
     position: relative;
     color: black;
     user-select: none;
@@ -35,6 +34,47 @@
     font-size: small;
 }
 
-main {
+.product-list {
+    margin: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-decoration: none;
+  }
+
+#nazwa{
+    color: black;
+    text-decoration: none;
+}
+#cena{
+    color: #DBAE26;
+    text-decoration: none;
+    font-size: large;
+}
+.product-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 10px;
     padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    flex: 0 0 calc(20% - 40px); /* Adjust the width as needed */
+    box-sizing: border-box;
+    text-decoration: none;
+  }
+
+.product-container:hover {
+    transform: scale(1.05);
+}
+
+.product-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+main {
+    padding: 10px;
 }

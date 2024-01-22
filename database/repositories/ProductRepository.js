@@ -4,12 +4,12 @@ class ProductRepository {
     constructor(conn) {
         this.conn = conn;
     }
-    async retrieve(name) {
+    async retrieve(name = null) {
         try {
             var req = new mssql.Request(this.conn);
             if (name) req.input('name', name);
-            var res = await req.query('select * from Produkt' + (name ? 'where Nazwa = @name' : ''));
-            return name ? res.recordset[0] : res.recordset;
+            var res = await req.query('select * from Produkt' + (name ? 'where Nazwa = %@name%' : ''));
+            return res.recordset;
         }
         catch (err) {
             console.log(err);
@@ -33,7 +33,7 @@ class ProductRepository {
         try {
             var req = new mssql.Request(this.conn);
             var res = await req.query('select Kategorie.Kategoria from Produkt JOIN Kategorie on Produkt.Kategoria = Kategorie.ID');
-            return res.recordset[0];
+            return res.recordset[0] ? res.recordset[0].Kategoria : res.recordset[0];
         }
         catch (err) {
             console.log(err);
@@ -43,8 +43,8 @@ class ProductRepository {
     async getColor(id) {
         try {
             var req = new mssql.Request(this.conn);
-            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.Kolor = Kolor.ID');
-            return res.recordset[0];
+            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.Kolor = Kolory.ID');
+            return res.recordset[0] ? res.recordset[0].Kolor : res.recordset[0];
         }
         catch (err) {
             console.log(err);
@@ -54,8 +54,8 @@ class ProductRepository {
     async getZircColor(id) {
         try {
             var req = new mssql.Request(this.conn);
-            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.[Kolor Cyrkonii] = Kolor.ID');
-            return res.recordset[0];
+            var res = await req.query('select Kolory.Kolor from Produkt JOIN Kolory on Produkt.[Kolor Cyrkonii] = Kolory.ID');
+            return res.recordset[0] ? res.recordset[0].Kolor : res.recordset[0];
         }
         catch (err) {
             console.log(err);
@@ -66,7 +66,7 @@ class ProductRepository {
         try {
             var req = new mssql.Request(this.conn);
             var res = await req.query('select Materialy.Material from Produkt JOIN Materialy on Produkt.Material = Materialy.ID');
-            return res.recordset[0];
+            return res.recordset[0] ? res.recordset[0].Material : res.recordset[0];
         }
         catch (err) {
             console.log(err);
@@ -77,7 +77,7 @@ class ProductRepository {
         try {
             var req = new mssql.Request(this.conn);
             var res = await req.query('select Modele.Model from Produkt JOIN Modele on Produkt.Model = Modele.ID');
-            return res.recordset[0];
+            return res.recordset[0] ? res.recordset[0].Model : res.recordset[0];
         }
         catch (err) {
             console.log(err);

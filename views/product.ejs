@@ -10,6 +10,18 @@
 <body>
 
  <h2><%= product.Nazwa %></h2>
+ <img src="data:image/jpeg;base64,<%= Buffer.from(product.Zdjecie).toString('base64') %>" alt="Image">
+ <h2><%= product.Cena + 'zł'%></h2>
+ <h2>Grubość: <%= product.Grubosc + 'mm' %></h2>
+ <h2>Długość: <%= product.Dlugosc + 'mm'%></h2>
+ <h2>Materiał: <%= material %></h2>
+ <h2>Model: <%= model %></h2>
+ <h2>Kategoria: <%= category %></h2>
+ <h2>Kolor: <%= color %></h2>
+ <h2><%= (zirc_color) ? 'Kolor Cyrkonii: ' + zirc_color  : ''%></h2>
+ <h2>Stan: <%= (product.Stan == 0) ? 'Brak' : ((product.Stan < 5) ? 'Ostatnie sztuki' : ((product.Stan < 10) ? 'Niewielka ilość' : 'Dostępne')) %></h2>
+ <h2>Opis: <%= product.Opis %></h2>
+
 
 </body>
 

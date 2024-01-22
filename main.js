@@ -54,8 +54,9 @@ app.use((req, res, next) => {
 
 app.use(shopRoutes);
 
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res) => {
+    var products = await ProdRepo.retrieve();
+    res.render('index', {products});
 });
 
 app.get('/admin', async (req, res) => {
@@ -67,8 +68,18 @@ app.get('/admin', async (req, res) => {
 });
 
 app.get('/konto', async (req, res) => {
-  var product = await ProdRepo.retrieve(1);
-  res.render('product', {product});
+  
+});
+
+app.get('/produkt/:id', async (req, res) => {
+  var productId = req.params.id;
+  var product = await ProdRepo.retrieveID(productId);
+  var category = await ProdRepo.getCategory(productId);
+  var color = await ProdRepo.getColor(productId);
+  var material = await ProdRepo.getMaterial(productId);
+  var model = await ProdRepo.getModel(productId);
+  var zirc_color = await ProdRepo.getZircColor(productId);
+  res.render('product', {product, category, color, material, model, zirc_color});
 });
 
 app.listen(port, () => {
