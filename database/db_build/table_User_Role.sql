@@ -1,0 +1,35 @@
+USE [Piercingownia]
+GO
+
+/****** Object:  Table [dbo].[User_Role]    Script Date: 22.01.2024 13:09:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[User_Role](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[UserID] [int] NOT NULL,
+	[RoleID] [int] NOT NULL,
+ CONSTRAINT [PK_User_Role_1] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[User_Role]  WITH CHECK ADD  CONSTRAINT [FK_User_Role_Role] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Role] ([ID])
+GO
+
+ALTER TABLE [dbo].[User_Role] CHECK CONSTRAINT [FK_User_Role_Role]
+GO
+
+ALTER TABLE [dbo].[User_Role]  WITH CHECK ADD  CONSTRAINT [FK_User_Role_Uzytkownik] FOREIGN KEY([UserID])
+REFERENCES [dbo].[Uzytkownik] ([ID])
+GO
+
+ALTER TABLE [dbo].[User_Role] CHECK CONSTRAINT [FK_User_Role_Uzytkownik]
+GO
+

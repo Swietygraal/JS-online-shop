@@ -1,0 +1,36 @@
+USE [Piercingownia]
+GO
+
+/****** Object:  Table [dbo].[Koszyk]    Script Date: 22.01.2024 13:07:21 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Koszyk](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[UserID] [int] NOT NULL,
+	[ProductID] [int] NOT NULL,
+	[Ilosc] [int] NOT NULL,
+ CONSTRAINT [PK_Koszyk_1] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Koszyk]  WITH CHECK ADD  CONSTRAINT [FK_Koszyk_Produkt] FOREIGN KEY([ProductID])
+REFERENCES [dbo].[Produkt] ([ID])
+GO
+
+ALTER TABLE [dbo].[Koszyk] CHECK CONSTRAINT [FK_Koszyk_Produkt]
+GO
+
+ALTER TABLE [dbo].[Koszyk]  WITH CHECK ADD  CONSTRAINT [FK_Koszyk_Uzytkownik] FOREIGN KEY([UserID])
+REFERENCES [dbo].[Uzytkownik] ([ID])
+GO
+
+ALTER TABLE [dbo].[Koszyk] CHECK CONSTRAINT [FK_Koszyk_Uzytkownik]
+GO
+
