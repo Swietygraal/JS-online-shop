@@ -42,3 +42,9 @@ VALUES
 ('Banan z grotami 1,2 mm - benzyna', 5.99, (SELECT * FROM OPENROWSET(BULK 'C:\Users\xilin\Desktop\ISIM\WEPPO_projekt\photos\Banan-rb-10mm.jpg', SINGLE_BLOB) AS Zdjecie), 7, 21, 1.2, 10, 1, 1, 100);
 
 */
+
+Select * from Kolory
+
+INSERT INTO Produkt (Nazwa, Cena, Zdjecie, Kategoria, Model, Grubosc, Dlugosc, Material, Kolor, Stan, [Kolor Cyrkonii])
+VALUES 
+('Banan z grotami 1,2 mm - benzyna', 9.99, (SELECT * FROM OPENROWSET(BULK 'C:\Users\xilin\Desktop\ISIM\WEPPO_projekt\JS-online-shop\photos\Clicker_Ozd_Crykonia_rozowa.jpg', SINGLE_BLOB) AS Zdjecie), 7, 24, 1.2, 8, 1, 2, 33, 7);

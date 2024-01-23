@@ -1,0 +1,41 @@
+.product-container {
+    display: flex;
+    background-color: #fff;
+    margin: 10px;
+    overflow: visible;
+    position: absolute;
+    top: 20%;
+  }
+  
+  .product-image {
+    flex: 1;
+    overflow: visible;
+  }
+  
+  .product-image img {
+    width: 400px;
+    height: auto;
+    border-radius: 8px 0 0 8px;
+    margin-left: 20%;
+  }
+  
+  .product-info {
+    flex: 2;
+    margin-left: 30%;
+    margin-right: 0px;
+  }
+  
+  .product-details {
+    display: flex;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  
+  .grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }

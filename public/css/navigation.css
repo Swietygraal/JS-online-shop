@@ -7,37 +7,32 @@
 }
 
 #admin {
-    width: 10%;
+    width: 40%;
     height: auto;
     position: relative;
 }
 
 #cart {
-    width: 10%;
+    width: 40%;
     height: auto;
-    position: relative;
+    /*position: relative;*/
 }
 
 #account {
-    width: 10%;
+    width: 40%;
     height: auto;
-    position: relative;
+    /*position: relative;*/
 }
 
 nav {
     position: absolute;
-    top: 5%; 
-    right: 5%;
+    top: 4.5%; 
+    left: 75%;
 }
 
 nav ul {
     list-style-type: none;
-    margin: 0;
+    margin-right: 10px;
     padding: 0;
     display: flex;
-    position: absolute;
-}
-
-nav ul li {
-    margin-right: 3%; 
 }
