@@ -3,11 +3,11 @@
 
 <head>
   <%- include('head.ejs') %>
-  <%- include('navigation.ejs') %>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produkt</title>
-  <link rel="stylesheet" href="/css/product.css">
+    <%- include('navigation.ejs') %>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Produkt</title>
+      <link rel="stylesheet" href="/css/product.css">
 </head>
 
 <body>
@@ -17,38 +17,66 @@
       <img src="data:image/jpeg;base64,<%= Buffer.from(product.Zdjecie).toString('base64') %>" alt="Product Image">
     </div>
     <div class="product-info">
-      <h2><%= product.Nazwa %></h2>
+      <h2>
+        <%= product.Nazwa %>
+      </h2>
+      <a href="/cart">
+        <div class="cart-butt">
+          <p>DO KOSZYKA</p>
+        </div>
+      </a>
       <div class="product-details">
         <div class="grid-container">
           <div class="grid-item">
-            <p><strong>Cena:</strong> <%= product.Cena + 'zł'%></p>
+            <p><strong>Cena:</strong>
+              <%= product.Cena + 'zł' %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Grubość:</strong> <%= product.Grubosc + 'mm' %></p>
+            <p><strong>Grubość:</strong>
+              <%= product.Grubosc + 'mm' %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Długość:</strong> <%= product.Dlugosc + 'mm'%></p>
+            <p><strong>Długość:</strong>
+              <%= product.Dlugosc + 'mm' %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Materiał:</strong> <%= material %></p>
+            <p><strong>Materiał:</strong>
+              <%= material %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Model:</strong> <%= model %></p>
+            <p><strong>Model:</strong>
+              <%= model %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Kategoria:</strong> <%= category %></p>
+            <p><strong>Kategoria:</strong>
+              <%= category %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Kolor:</strong> <%= color %></p>
+            <p><strong>Kolor:</strong>
+              <%= color %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Kolor Cyrkonii:</strong> <%= zirc_color || '' %></p>
+            <p><strong>Kolor Cyrkonii:</strong>
+              <%= zirc_color || '' %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Stan:</strong> <%= (product.Stan == 0) ? 'Brak' : ((product.Stan < 5) ? 'Ostatnie sztuki' : ((product.Stan < 10) ? 'Niewielka ilość' : 'Dostępne')) %></p>
+            <p><strong>Stan:</strong>
+              <%= (product.Stan==0) ? 'Brak' : ((product.Stan < 5) ? 'Ostatnie sztuki' : ((product.Stan < 10)
+                ? 'Niewielka ilość' : 'Dostępne' )) %>
+            </p>
           </div>
           <div class="grid-item">
-            <p><strong>Opis:</strong> <%= product.Opis %></p>
+            <p><strong>Opis:</strong>
+              <%= product.Opis %>
+            </p>
           </div>
         </div>
       </div>

@@ -7,6 +7,22 @@
     top: 20%;
   }
   
+  .cart-butt{
+    flex: 2;
+    background-color: #DBAE26;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: 0.5s;
+    box-sizing: border-box;
+    text-decoration: none;
+  }
+
+  .cart-butt:hover {
+    background-color: #fff;
+}
+
+
   .product-image {
     flex: 1;
     overflow: visible;

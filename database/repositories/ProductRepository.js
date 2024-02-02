@@ -105,7 +105,7 @@ class ProductRepository {
             + (Product.thickness ? ', Grubosc' : '') + (Product.length ? ', Dlugosc' : '')
             + (Product.material ? ', Material' : '') + (Product.color ? ', Kolor' : '')
             + (Product.zirc_color ? ', [Kolor Cyrkonii]' : '') + (Product.description ? ', Opis' : '')
-            + ") values (@name, @price, @photo, @stock"
+            + ") values (@name, @price,(SELECT * FROM OPENROWSET(BULK @photo, SINGLE_BLOB) AS Zdjecie), @stock"
             + (Product.category ? ', @category' : '') + (Product.model ? ', @model' : '')
             + (Product.thickness ? ', @thickness' : '') + (Product.length ? ', @length' : '')
             + (Product.material ? ', @material' : '') + (Product.color ? ', @color' : '')
