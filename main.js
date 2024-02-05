@@ -3,6 +3,7 @@ var http = require('http');
 const express = require('express');
 let session = require('express-session')
 const app = express();
+app.use(express.urlencoded({extended: true}))
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -34,8 +35,6 @@ var MatRepo = new MaterialRepository(conn);
 var ModRepo = new ModelRepository(conn);
 var ProdRepo = new ProductRepository(conn);
 
-const shopRoutes = require("./routes/shop");
-
 async function main() {
   await conn.connect();
 }
@@ -62,15 +61,21 @@ app.use((req, res, next) => {
   next();
 })
 
-
-app.use(shopRoutes);
-
 app.get('/', async (req, res) => {
   var products = await ProdRepo.retrieve();
   res.render('index', { products });
 });
 
 app.get('/admin', async (req, res) => {
+  res.render('admin_panel');
+})
+
+app.post('/admin/products', async (req, res) => {
+  let products = await ProdRepo.retrieve();
+  res.render('admin_products', {products: products});
+});
+
+app.get('/admin/products/add_product', async (req, res) => {
   var categories = await CategRepo.retrieve();
   var colors = await ClrRepo.retrieve();
   var materials = await MatRepo.retrieve();
@@ -79,11 +84,10 @@ app.get('/admin', async (req, res) => {
     categories, colors, materials, models, name: "",
     price: 0, stock: 0, thickness: "", length: "", description: "", message: ""
   });
-});
+})
 
 app.post('/new_product', upload.single('photo'), async (req, res) => {
   var product = {};
-  console.log(req.body);
   product.name = req.body.name;
   product.price = parseFloat(req.body.price);
   product.stock = req.body.stock;
@@ -101,11 +105,6 @@ app.post('/new_product', upload.single('photo'), async (req, res) => {
   product.color = color.ID;
   var zirc_color = await ClrRepo.retrieve(req.body.zircColor);
   product.zirc_color = zirc_color.ID;
-
-  console.log(product.price);
-  console.log(product.photo);
-  console.log(req.body.color);
-  console.log(product.color);
 
   var categories = await CategRepo.retrieve();
   var colors = await ClrRepo.retrieve();

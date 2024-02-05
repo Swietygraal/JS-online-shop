@@ -1,0 +1,42 @@
+<%- include('head.ejs') %>
+</head>
+
+<body>
+    <%- include('navigation.ejs') %>
+    <main>
+        <p><a href="/admin/products/add_product">Dodaj produkt</a></p>
+        <table>
+            <tr>
+                <th>Zdjęcie</th>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Stan</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <% products.forEach(item => { %>
+                <tr>
+                    <td><img src="/uploads/<%= item.Zdjecie.substring(15) %>" alt="Product Image"></td>
+                    <td><%= item.ID %></td>
+                    <td><%= item.Nazwa %></td>
+                    <td><%= item.Cena %></td>
+                    <td><%= item.Stan %></td>
+                    <td>
+                        <form action="/edit_product" method="POST">
+                            <input type="hidden" value="<%= item.ID %>" name="productID">
+                            <button class="button edit" type="submit">Edytuj</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete_product" method="POST">
+                            <input type="hidden" value="<%= item.ID %>" name="productID">
+                            <button class="button delete" type="submit">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </main>
+</body>
+</html>
