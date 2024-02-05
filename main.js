@@ -26,6 +26,7 @@ const ColorRepository = require('./database/repositories/ColorRepository');
 const MaterialRepository = require('./database/repositories/MaterialRepository');
 const ModelRepository = require('./database/repositories/ModelRepository');
 const ProductRepository = require('./database/repositories/ProductRepository');
+const CartRepository = require('./database/repositories/CartRepository');
 
 var conn = new mssql.ConnectionPool(
   'server=localhost,1433;database=Piercingownia;user id=weppo;password=weppo; TrustServerCertificate=true');
@@ -34,6 +35,7 @@ var ClrRepo = new ColorRepository(conn);
 var MatRepo = new MaterialRepository(conn);
 var ModRepo = new ModelRepository(conn);
 var ProdRepo = new ProductRepository(conn);
+var CartRepo = new CartRepository(conn);
 
 async function main() {
   await conn.connect();
