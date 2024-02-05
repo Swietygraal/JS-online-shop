@@ -14,7 +14,7 @@
 
   <div class="product-container">
     <div class="product-image">
-      <img src="data:image/jpeg;base64,<%= Buffer.from(product.Zdjecie).toString('base64') %>" alt="Product Image">
+      <img src="/uploads/<%= product.Zdjecie.substring(15) %>" alt="Product Image">
     </div>
     <div class="product-info">
       <h2>

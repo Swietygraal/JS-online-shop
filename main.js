@@ -4,7 +4,16 @@ const express = require('express');
 let session = require('express-session')
 const app = express();
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'public/uploads');
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 app.set('view engine', 'ejs');
 app.set('views', './views');
 const port = 3000;
@@ -81,7 +90,7 @@ app.post('/new_product', upload.single('photo'), async (req, res) => {
   product.desription = req.body.description;
   product.thickness = parseFloat(req.body.thickness);
   product.length = parseFloat(req.body.length);
-  product.photo = req.file.path;
+  product.photo = req.file ? req.file.path : req.file;
   var model = await ModRepo.retrieve(req.body.model);
   product.model = model.ID;
   var material = await MatRepo.retrieve(req.body.materiale);

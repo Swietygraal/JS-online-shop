@@ -1,0 +1,43 @@
+/* Your CSS file */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Styles for head and navigation */
+  
+  .content-wrapper {
+    position: absolute;
+    top: 150px;
+    left: 12%;
+    margin: 0 auto;
+  }
+  
+  .message {
+    color: green;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .form-container {
+    margin: 20px 0;
+  }
+  
+  .info-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .info-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  

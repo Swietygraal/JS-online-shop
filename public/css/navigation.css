@@ -7,27 +7,51 @@
 }
 
 #admin {
-    width: 40%;
+    width: 30px;
     height: auto;
     position: relative;
 }
 
 #cart {
-    width: 40%;
+    width: 30px;
     height: auto;
     /*position: relative;*/
 }
 
 #account {
-    width: 40%;
+    width: 30px;
     height: auto;
     /*position: relative;*/
 }
 
+
+.search-container {
+    text-align: center;
+  }
+  
+  .search-container form {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .search-container input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .search-container button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
 nav {
     position: absolute;
     top: 4.5%; 
-    left: 75%;
+    left: 65%;
 }
 
 nav ul {
