@@ -144,6 +144,13 @@ app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
   });
 });
 
+app.post('/delete_product/:id', async (req, res) => {
+  var productId = req.params.id;
+  var aff = await ProdRepo.delete(productId);
+  let products = await ProdRepo.retrieve();
+  res.render('admin_products', {products: products});
+});
+
 app.post('/new_product', upload.single('photo'), async (req, res) => {
   var product = {};
   product.name = req.body.name;

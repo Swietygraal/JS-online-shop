@@ -147,11 +147,11 @@ class ProductRepository {
             throw err;
         }
     }
-    async delete(Product) {
-        if (!Product || !Product.ID) return;
+    async delete(id) {
+        if (!id) return;
         try {
             var req = new mssql.Request(this.conn);
-            req.input("id", Product.ID);
+            req.input("id", id);
             var ret = await req.query('delete Produkt where ID = @id');
             return ret.rowsAffected[0];
         }

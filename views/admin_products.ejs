@@ -29,7 +29,7 @@
                         </form>
                     </td>
                     <td>
-                        <form action="/delete_product" method="POST">
+                        <form action="/delete_product/<%= item.ID %>" method="POST">
                             <input type="hidden" value="<%= item.ID %>" name="productID">
                             <button class="button delete" type="submit">Usuń</button>
                         </form>
