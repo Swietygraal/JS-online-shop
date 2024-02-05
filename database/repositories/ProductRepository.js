@@ -124,18 +124,18 @@ class ProductRepository {
         try {
             var req = new mssql.Request(this.conn);
             req.input("id", Product.ID);
-            req.input("name", Product.name);
-            req.input("price", Product.price);
-            req.input("photo", Product.photo);
-            req.input("stock", Product.stock);
-            req.input("category", Product.category);
-            req.input("model", Product.model);
-            req.input("thickness", Product.thickness);
-            req.input("length", Product.length);
-            req.input("material", Product.material);
-            req.input("color", Product.color);
-            req.input("zirc_color", Product.zirc_color);
-            req.input("description", Product.description);
+            req.input("name", Product.Nazwa);
+            req.input("price", Product.Cena);
+            req.input("photo", Product.Zdjecie);
+            req.input("stock", Product.Stan);
+            req.input("category", Product.Kategoria);
+            req.input("model", Product.Model);
+            req.input("thickness", Product.Grubosx);
+            req.input("length", Product.Dlugosc);
+            req.input("material", Product.Material);
+            req.input("color", Product.Kolor);
+            req.input("zirc_color", Product["Kolor Cyrkonii"]);
+            req.input("description", Product.Opis);
             var ret = await req.query('update Produkt set Nazwa=@name, Cena=@price, Stan=@stock, '
             + 'Zdjecie=@photo, Kategoria=@category, Model=@model, '
             + 'Grubosc=@thickness, Dlugosc=@length, Material=@material, Kolor=@color, '

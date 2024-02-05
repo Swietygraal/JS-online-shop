@@ -86,6 +86,62 @@ app.get('/admin/products/add_product', async (req, res) => {
   });
 })
 
+app.get('/edit_product/:id', async (req, res) => {
+  var categories = await CategRepo.retrieve();
+  var colors = await ClrRepo.retrieve();
+  var materials = await MatRepo.retrieve();
+  var models = await ModRepo.retrieve();
+  var productId = req.params.id;
+  var product = await ProdRepo.retrieveID(productId);
+  var selectedCategory = await ProdRepo.getCategory(productId);
+  var selectedColor = await ProdRepo.getColor(productId);
+  var selectedMaterial = await ProdRepo.getMaterial(productId);
+  var selectedModel = await ProdRepo.getModel(productId);
+  var selectedZirc_color = await ProdRepo.getZircColor(productId);
+  res.render('edit_product', {
+    categories, colors, materials, models, product, selectedCategory, 
+    selectedColor, selectedMaterial, selectedModel, selectedZirc_color
+  });
+});
+
+
+app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
+  var productId = req.params.id;
+  var product = await ProdRepo.retrieveID(productId);
+  product.Nazwa = req.body.name ? req.body.name : product.Nazwa;
+  product.Cena = req.body.pric ? parseFloat(req.body.price) : product.Cena;
+  product.Stan = req.body.stock ? parseInt(req.body.stock) : product.Stan;
+  product.Opis = req.body.description;
+  product.Grubosc = parseFloat(req.body.thickness);
+  product.Dlugosc = parseFloat(req.body.length);
+  product.Zdjecie = req.file ? req.file.path : product.Zdjecie;
+  var model = await ModRepo.retrieve(req.body.model);
+  product.Model = model.ID;
+  var selectedModel = model.Model;
+  var material = await MatRepo.retrieve(req.body.materiale);
+  product.Material = material.ID;
+  var selectedMaterial = material.Material;
+  var category = await CategRepo.retrieve(req.body.category);
+  product.Kategoria = category.ID;
+  var selectedCategory = category.Kategoria;
+  var color = await ClrRepo.retrieve(req.body.color);
+  product.Kolor = color.ID;
+  var selectedColor = color.Kolor;
+  var zirc_color = await ClrRepo.retrieve(req.body.zircColor);
+  product["Kolor Cyrkonii"] = zirc_color.ID;
+  var selectedZirc_color = zirc_color.Kolor;
+
+  var categories = await CategRepo.retrieve();
+  var colors = await ClrRepo.retrieve();
+  var materials = await MatRepo.retrieve();
+  var models = await ModRepo.retrieve();
+  var aff = await ProdRepo.update(product);
+  res.render('edit_product', {
+    categories, colors, materials, models, product, selectedCategory, 
+    selectedColor, selectedMaterial, selectedModel, selectedZirc_color
+  });
+});
+
 app.post('/new_product', upload.single('photo'), async (req, res) => {
   var product = {};
   product.name = req.body.name;

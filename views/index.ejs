@@ -21,7 +21,7 @@
               </a></p>
           </section>
           <div class="product-list">
-            <% products.forEach(product=> { console.log(product.Zdjecie.substring(15));%>
+            <% products.forEach(product=> { %>
               <a href="/produkt/<%= product.ID %>">
                 <div class="product-container">
                   <img src="/uploads/<%= product.Zdjecie.substring(15) %>">

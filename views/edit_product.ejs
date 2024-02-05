@@ -1,55 +1,87 @@
+<!DOCTYPE html>
 <%- include('head.ejs') %>
-</head>
+  <link rel="stylesheet" href="/css/add_product.css">
+  </head>
 
-<body>
-  <%- include('navigation.ejs') %>
-  <label for="category">Kategoria</label>
-  <select name="category_dropdown" id="category">
-    <option></option>
-    <% categories.forEach(c=> { %>
-      <option>
-        <%= c.Kategoria %>
-      </option>
-      <% }); %>
-  </select>
-  <label for="model">Model</label>
-  <select name="model_dropdown" id="model">
-    <option></option>
-    <% models.forEach(m => { %>
-      <option>
-        <%= m.Model %>
-      </option>
-      <% }); %>
-  </select>
-  <label for="material">Materiał</label>
-  <select name="material_dropdown" id="material">
-    <option></option>
-    <% materials.forEach(m => { %>
-      <option>
-        <%= m.Material %>
-      </option>
-      <% }); %>
-  </select>
-  <label for="color">Kolor</label>
-  <select name="color_dropdown" id="color">
-    <option></option>
-    <% colors.forEach(c => { %>
-      <option>
-        <%= c.Kolor %>
-      </option>
-      <% }); %>
-  </select>
-  <label for="zirc_color">Kolor Cyrkonii</label>
-  <select name="zirc_color_dropdown" id="zirc_color">
-    <option></option>
-    <% colors.forEach(c => { %>
-      <option>
-        <%= c.Kolor %>
-      </option>
-      <% }); %>
-  </select>
+  <body>
+    <%- include('navigation.ejs') %>
+      <div class="content-wrapper">
+          </div>
+          <form action="/edit_product/<%= product.ID %>" method="post" enctype="multipart/form-data">
+            <div class="info-container">
+              <div class="grid-item">
+                Zdjęcie: <input type="file" name="photo">
+              </div>
+              <div class="grid-item">
+                <button type="submit">Zapisz</button>
+              </div>
+              <div class="grid-item">
+                Nazwa: <input type='text' name='name' value='<%= product.Nazwa%>' />
+              </div>
+              <div class="grid-item">
+                Cena: <input type='text' name='price' value='<%= product.Cena%>' />
+              </div>
+              <div class="grid-item">
+                Stan: <input type='number' name='stock' value='<%= product.Stan%>' />
+              </div>
+              <div class="grid-item">
+                Grubość: <input type='text' name='thickness' value='<%= product.Grubosc%>' />
+              </div>
+              <div class="grid-item">
+                Długość: <input type='text' name='length' value='<%= product.Dlugosc%>' />
+              </div>
+              <div class="grid-item">
+                Opis: <input type='text' name='description' value='<%= product.Opis%>' />
+              </div>
 
+              <label for="category">Kategoria</label>
+              <select name="category" id="category">
+                <option></option>
+                <% categories.forEach(c=> { %>
+                  <option value="<%= c.Kategoria %>" <% (c.Kategoria==selectedCategory) ? "selected" : '' %>>
+                    <%= c.Kategoria %>
+                  </option>
+                  <% }); %>
+              </select>
+              <label for="model">Model</label>
+              <select name="model" id="model">
+                <option></option>
+                <% models.forEach(m=> { %>
+                  <option>
+                    <%= m.Model %>
+                  </option>
+                  <% }); %>
+              </select>
+              <label for="material">Materiał</label>
+              <select name="material" id="material">
+                <option></option>
+                <% materials.forEach(m=> { %>
+                  <option>
+                    <%= m.Material %>
+                  </option>
+                  <% }); %>
+              </select>
+              <label for="color">Kolor</label>
+              <select name="color" id="color">
+                <option></option>
+                <% colors.forEach(c=> { %>
+                  <option>
+                    <%= c.Kolor %>
+                  </option>
+                  <% }); %>
+              </select>
+              <label for="zirc_color">Kolor Cyrkonii</label>
+              <select name="zirc_color" id="zirc_color">
+                <option></option>
+                <% colors.forEach(c=> { %>
+                  <option>
+                    <%= c.Kolor %>
+                  </option>
+                  <% }); %>
+              </select>
+            </div>
+          </form>
+      </div>
+  </body>
 
-</body>
-
-</html>
+  </html>
