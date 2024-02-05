@@ -4,7 +4,7 @@ const express = require('express');
 let session = require('express-session')
 const app = express();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); 
+const upload = multer({dest: 'uploads/'});
 app.set('view engine', 'ejs');
 app.set('views', './views');
 const port = 3000;
@@ -27,7 +27,7 @@ var ProdRepo = new ProductRepository(conn);
 
 const shopRoutes = require("./routes/shop");
 
-async function main(){
+async function main() {
   await conn.connect();
 }
 
@@ -57,8 +57,8 @@ app.use((req, res, next) => {
 app.use(shopRoutes);
 
 app.get('/', async (req, res) => {
-    var products = await ProdRepo.retrieve();
-    res.render('index', {products});
+  var products = await ProdRepo.retrieve();
+  res.render('index', { products });
 });
 
 app.get('/admin', async (req, res) => {
@@ -66,40 +66,57 @@ app.get('/admin', async (req, res) => {
   var colors = await ClrRepo.retrieve();
   var materials = await MatRepo.retrieve();
   var models = await ModRepo.retrieve();
-  res.render('add_product', {categories, colors, materials, models, name:"", 
-              price: 0, stock: 0, thickness:"", length:"", description: "", message:""});
+  res.render('add_product', {
+    categories, colors, materials, models, name: "",
+    price: 0, stock: 0, thickness: "", length: "", description: "", message: ""
+  });
 });
 
 app.post('/new_product', upload.single('photo'), async (req, res) => {
   var product = {};
-  product.name = req.session.name;
-  product.price = req.session.price;
-  product.stock = req.session.stock;
-  product.desription = req.session.description;
-  product.thickness = req.session.thickness;
-  product.length = req.session.length;
+  console.log(req.body);
+  product.name = req.body.name;
+  product.price = parseFloat(req.body.price);
+  product.stock = req.body.stock;
+  product.desription = req.body.description;
+  product.thickness = parseFloat(req.body.thickness);
+  product.length = parseFloat(req.body.length);
   product.photo = req.file.path;
-  product.model = await ModRepo.retrieve(req.session.selectModel).ID;
-  product.material = await MatRepo.retrieve(req.session.selectMateriale).ID;
-  product.category = await CategRepo.retrieve(req.session.selectCategory).ID;
-  product.color = await ClrRepo.retrieve(req.session.selectColor).ID;
-  product.zirc_color = await ClrRepo.retrieve(req.session.selectZircColor).ID;
+  var model = await ModRepo.retrieve(req.body.model);
+  product.model = model.ID;
+  var material = await MatRepo.retrieve(req.body.materiale);
+  product.material = material.ID;
+  var category = await CategRepo.retrieve(req.body.category);
+  product.category = category.ID;
+  var color = await ClrRepo.retrieve(req.body.color);
+  product.color = color.ID;
+  var zirc_color = await ClrRepo.retrieve(req.body.zircColor);
+  product.zirc_color = zirc_color.ID;
+
+  console.log(product.price);
+  console.log(product.photo);
+  console.log(req.body.color);
+  console.log(product.color);
 
   var categories = await CategRepo.retrieve();
   var colors = await ClrRepo.retrieve();
   var materials = await MatRepo.retrieve();
   var models = await ModRepo.retrieve();
-  
-  if(product.name && product.price && product.photo && product.stock){
+
+  if (product.name && product.price && product.photo && product.stock) {
     var id = await ProdRepo.insert(product);
-    res.render("add_product",  {categories, colors, 
-              materials, models, name:"", 
-              price: 0, stock: 0, thickness:"", length:"", description: "", message:"Produkt został dodany"});
+    res.render("add_product", {
+      categories, colors,
+      materials, models, name: "",
+      price: 0, stock: 0, thickness: "", length: "", description: "", message: "Produkt został dodany"
+    });
   }
   else {
-    res.render("add_product",  {categories, colors, 
-      materials, models, name:"", 
-      price: 0, stock: 0, thickness:"", length:"", description: "", message:"Wypełnij wymagane pola"});
+    res.render("add_product", {
+      categories, colors,
+      materials, models, name: "",
+      price: 0, stock: 0, thickness: "", length: "", description: "", message: "Wypełnij wymagane pola"
+    });
   }
 });
 
@@ -111,7 +128,7 @@ app.get('/produkt/:id', async (req, res) => {
   var material = await ProdRepo.getMaterial(productId);
   var model = await ProdRepo.getModel(productId);
   var zirc_color = await ProdRepo.getZircColor(productId);
-  res.render('product', {product, category, color, material, model, zirc_color});
+  res.render('product', { product, category, color, material, model, zirc_color });
 });
 
 app.listen(port, () => {

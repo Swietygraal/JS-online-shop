@@ -90,7 +90,6 @@ class ProductRepository {
             var req = new mssql.Request(this.conn);
             req.input("name", Product.name);
             req.input("price", Product.price);
-            req.input("photo", Product.photo);
             req.input("stock", Product.stock);
             req.input("category", Product.category);
             req.input("model", Product.model);
@@ -105,7 +104,7 @@ class ProductRepository {
             + (Product.thickness ? ', Grubosc' : '') + (Product.length ? ', Dlugosc' : '')
             + (Product.material ? ', Material' : '') + (Product.color ? ', Kolor' : '')
             + (Product.zirc_color ? ', [Kolor Cyrkonii]' : '') + (Product.description ? ', Opis' : '')
-            + ") values (@name, @price,(SELECT * FROM OPENROWSET(BULK @photo, SINGLE_BLOB) AS Zdjecie), @stock"
+            + ") values (@name, @price,(SELECT * FROM OPENROWSET(BULK '" + Product.photo + "', SINGLE_BLOB) AS Zdjecie), @stock"
             + (Product.category ? ', @category' : '') + (Product.model ? ', @model' : '')
             + (Product.thickness ? ', @thickness' : '') + (Product.length ? ', @length' : '')
             + (Product.material ? ', @material' : '') + (Product.color ? ', @color' : '')
