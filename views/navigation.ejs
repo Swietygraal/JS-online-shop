@@ -1,14 +1,15 @@
 <div class="scrollable-container">
     <main>
+      <body>
       <a href="/">
         <img src="/graphics/logo.svg" alt="Online Shop Logo" id="logo">
       </a>
       <nav>
         <ul>
           <li><div class="search-container">
-            <form action="/search" method="get">
-              <input type="text" name="query" placeholder="Search products...">
-              <button type="submit">Search</button>
+            <form action="/search" method="post">
+              <input type="text" name="query" placeholder="Szukaj...">
+              <button type="submit">Szukaj</button>
             </form>
           </div></li>
           <li><a href="/konto"><img src="/graphics/account.png" id="account"></a></li>
@@ -16,5 +17,6 @@
           <li><a href="/admin"><img src="/graphics/administrator.png" id="admin"></a></li>
         </ul>
       </nav>
+    </body>
     </main>
 </div>

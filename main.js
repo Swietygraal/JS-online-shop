@@ -204,6 +204,14 @@ app.get('/produkt/:id', async (req, res) => {
   res.render('product', { product, category, color, material, model, zirc_color });
 });
 
+app.post('/search', async (req, res) => {
+  var q = req.body.query;
+  console.log(q);
+  var products = await ProdRepo.search(q);
+  (console.log(products));
+  res.render('product_list', { products });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

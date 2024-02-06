@@ -1,1 +1,4 @@
 node_modules
+public/uploads
+package.json
+package-lock.json

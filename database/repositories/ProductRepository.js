@@ -84,6 +84,25 @@ class ProductRepository {
             return [];
         }
     }
+    async search(query){
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select * from Produkt '
+           /* + 'LEFT JOIN Kolory ON Produkt.Kolor = Kolory.ID ' 
+            + 'LEFT JOIN Kategorie ON Produkt.Kategoria = Kategorie.ID '
+            + 'LEFT JOIN Materialy on Produkt.Material = Materialy.ID ' */
+            + "WHERE Produkt.Nazwa LIKE '%" + query + "%'"
+         /*   + "Modele.Model LIKE '%" + query + "%' OR "
+            + 'Kategorie.Kategoria LIKE %' + query + '% OR '
+            + 'Materialy.Material LIKE %' + query + '% OR '
+            + 'Kolory.Kolor LIKE %' + query + '%'*/);
+            return res.recordset;
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
     async insert(Product) {
         if (!Product || !Product.name || !Product.price || !Product.photo || !Product.stock) return;
         try {
