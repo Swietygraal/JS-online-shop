@@ -31,6 +31,9 @@ const CartRepository = require('./database/repositories/CartRepository');
 const UserRepository = require('./database/repositories/UserRepository');
 const User_RoleRepository = require('./database/repositories/User_RoleRepository');
 const RoleRepository = require('./database/repositories/RoleRepository');
+const StatusRepository = require('./database/repositories/StatusRepository');
+const OrderRepository = require('./database/repositories/OrderRepository');
+const OrderedProductsRepository = require('./database/repositories/OrderedProductsRepository');
 
 var conn = new mssql.ConnectionPool(
   'server=localhost,1433;database=Piercingownia;user id=weppo;password=weppo; TrustServerCertificate=true');
@@ -43,6 +46,9 @@ var CartRepo = new CartRepository(conn);
 var UserRepo = new UserRepository(conn);
 var User_RoleRepo = new User_RoleRepository(conn);
 var RoleRepo = new RoleRepository(conn);
+var StatRepo = new StatusRepository(conn);
+var OrderRepo = new OrderRepository(conn);
+var OrderProdRepo = new OrderedProductsRepository(conn);
 
 async function main() {
   await conn.connect();
@@ -66,7 +72,7 @@ app.use((req, res, next) => {
     }
   }
   next();
-})
+});
 
 app.get('/', async (req, res) => {
   var products = await ProdRepo.retrieve();
@@ -76,7 +82,7 @@ app.get('/', async (req, res) => {
 app.get('/admin', async (req, res) => {
   if (req.session.account.user_role.includes('admin'))
     res.render('admin_panel');
-})
+});
 
 app.post('/admin/products', async (req, res) => {
   let products = await ProdRepo.retrieve();
@@ -92,7 +98,85 @@ app.get('/admin/products/add_product', async (req, res) => {
     categories, colors, materials, models, name: "",
     price: 0, stock: 0, thickness: "", length: "", description: "", message: ""
   });
-})
+});
+
+app.post('/admin/orders', async (req, res) => {
+  var orders = await OrderRepo.retrieve();
+  orders.forEach(o => {
+    var user = UserRepo.retrieveID(o.Uzytkownik);
+    o.user = user.Email;
+    var status = StatRepo.retrieveID(o.Status);
+    o.status = status.Status;
+  });
+  var statusy = StatRepo.retrieve();
+  res.render('admin_orders', {
+    orders, statusy
+  });
+});
+
+app.get('/account/orders', async (req, res) => {
+  var orders = await OrderRepo.retrieveUser(req.session.account.user_ID);
+  orders.forEach(o => {
+    var status = StatRepo.retrieveID(o.Status);
+    o.status = status.Status;
+  });
+  res.render('account_orders', {
+    orders
+  });
+});
+
+app.get('/order', async (req, res) => {
+  var order;
+  var statusID = await StatRepo.retrieve('Zamówienie w realizacji');
+  order.user = req.session.account.user_id;
+  order.status = statusID;
+  order = await OrderRepo.insert(order);
+  order.Nazwa_statusu = 'Zamówienie w realizacji';
+  var products = await CartRepo.retrieve(req.session.account.user_id);
+  await OrderProdRepo.insert(products, orderId);
+  products.forEach(async p => {
+    var amount = p.Ilosc;
+    p = await ProdRepo.retrieveID(p.ProductID);
+    p.Ilosc = amount;
+  });
+  res.render('order', {
+    order, products
+  });
+});
+
+app.get('/order/:id', async (req, res) => {
+  var orderId = req.params.id;
+  var order;
+  order = await OrderRepo.retrieveID(orderId);
+  order.Nazwa_statusu = await StatRepo.retrieveID(order.Status);
+  var products = await OrderRepo.getOrderProducts(orderId);
+  products.forEach(async p => {
+    var amount = p.Ilosc;
+    p = await ProdRepo.retrieveID(p.ProductID);
+    p.Ilosc = amount;
+  });
+  res.render('order', {
+    order, products
+  });
+});
+
+app.post('/status_change/:id', async (req, res) => {
+  var orderId = req.params.id;
+  var statusId = await StatRepo.retrieve(req.body.status);
+  await OrderRepo.updateStatus(orderId, statusId);
+
+  var orders = await OrderRepo.retrieve();
+  orders.forEach(o => {
+    var user = UserRepo.retrieveID(o.Uzytkownik);
+    o.user = user.Email;
+    var status = StatRepo.retrieveID(o.Status);
+    o.status = status.Status;
+  });
+  var statusy = StatRepo.retrieve();
+  res.render('admin_orders', {
+    orders, statusy
+  });
+});
 
 app.get('/edit_product/:id', async (req, res) => {
   var categories = await CategRepo.retrieve();
@@ -111,7 +195,6 @@ app.get('/edit_product/:id', async (req, res) => {
     selectedColor, selectedMaterial, selectedModel, selectedZirc_color
   });
 });
-
 
 app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
   var productId = req.params.id;

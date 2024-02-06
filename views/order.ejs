@@ -1,0 +1,46 @@
+<%- include('head.ejs') %>
+  <link rel="stylesheet" href="/css/index.css">
+  </head>
+
+  <body>
+    <%- include('navigation.ejs') %>
+      <div class="container">
+        <main>
+            <h2 id="order">
+                Zamówienie numer <%= order.ID %>
+            </h2>
+            <h2 id="date">
+                Złożone <%= order.Data_zlozenia %>
+            </h2>
+            <h2 id="status">
+                Status zamówienia: <%= order.Nazwa_statusu %> (od <%= order.Zmiana_statusu %>)
+            </h2>
+          </section>
+          <div class="product-list">
+            <h2 id="products">
+                Produkty
+              </h2>
+            <% products.forEach(product => { %>
+              <a href="/produkt/<%= product.ID %>">
+                <div class="product-container">
+                  <img src="/uploads/<%= product.Zdjecie.substring(15) %>">
+                  <h2 id="nazwa">
+                    <%= product.Nazwa %>
+                  </h2>
+                  <p id="cena">
+                    <%= product.Cena + 'zł' %>
+                  </p>
+                  <p id="ilosc">
+                    <%= product.Ilosc %>
+                  </p>
+                </div>
+              </a>
+              <% }); %>
+          </div>
+
+        </main>
+      </div>
+
+  </body>
+
+  </html>

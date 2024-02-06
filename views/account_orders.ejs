@@ -1,0 +1,36 @@
+<%- include('head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('navigation.ejs') %>
+            <main>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data złożenia</th>
+                        <th>Status</th>
+                        <th>Zmiana statusu</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <% orders.forEach(item=> { %>
+                        <tr href="/order/<%= item.ID %>">
+                            <td>
+                                <%= item.ID %>
+                            </td>
+                            <td>
+                                <%= item.Data_zlozenia %>
+                            </td>
+                            <td>
+                                <%= item.status %>
+                            </td>
+                            <td>
+                                <%= item.Zmiana_statusu %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </table>
+            </main>
+    </body>
+
+    </html>

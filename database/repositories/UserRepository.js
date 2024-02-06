@@ -15,6 +15,19 @@ class UserRepository {
             return [];
         }
     }
+    async retrieveID(id) {
+        try {
+            var req = new mssql.Request(this.conn);
+            if (id) req.input("id", id);
+            else return;
+            var res = await req.query('select * from Uzytkownik where ID = @id');
+            return res.recordset[0];
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
     async retrieve_user(email) {
         try {
             var req = new mssql.Request(this.conn);

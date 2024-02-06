@@ -1,0 +1,52 @@
+<%- include('head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('navigation.ejs') %>
+            <main>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Użytkownik</th>
+                        <th>Data złożenia</th>
+                        <th>Status</th>
+                        <th>Zmiana statusu</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <% orders.forEach(item=> { %>
+                        <tr href="/order/<%= item.ID %>">
+                            <td>
+                                <%= item.ID %>
+                            </td>
+                            <td>
+                                <%= item.user %>
+                            </td>
+                            <td>
+                                <%= item.Data_zlozenia %>
+                            </td>
+                            <td>
+                                <select name="status" id="status">
+                                    <% statusy.forEach(s=> { %>
+                                        <option value="<%= s.Status %>" <% (s.Status==item.status) ? "selected" : ''
+                                            %>>
+                                            <%= s.Status %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                            </td>
+                            <td>
+                                <%= item.Zmiana_statusu %>
+                            </td>
+                            <td>
+                                <form action="/status_change/<%= item.ID %>" method="Post">
+                                    <button type="submit">Zapisz</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </table>
+            </main>
+    </body>
+
+    </html>

@@ -4,6 +4,17 @@ class OrderRepository {
     constructor(conn) {
         this.conn = conn;
     }
+    async retrieve() {
+        try {
+            var req = new mssql.Request(this.conn);
+            var res = await req.query('select * from Zamowienie');
+            return res.recordset;
+        }
+        catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
     async retrieveID(id) {
         try {
             var req = new mssql.Request(this.conn);
@@ -53,32 +64,29 @@ class OrderRepository {
         }
     }
     async insert(order) {
-        if (!order || !order.user || !order.status || !order.date) return;
+        if (!order || !order.user || !order.status) return;
         try {
             var req = new mssql.Request(this.conn);
             req.input("user", order.user);
             req.input("status", order.status);
            // req.input("date", order.date);
-            req.input("change_date", order.change_date);
 
-            var res = await req.query('insert into Zamowienie (Uzytkownik, Status, Data_zlozenia'
-            + (order.change_date ? ', Zmiana_statusu' : '') 
-            + ") values (@user, @status, GETDATE()"
-            + (order.change_date ? ', @change_date' : '')
+            var res = await req.query('insert into Zamowienie (Uzytkownik, Status, Data_zlozenia, Zmiana_statusu'
+            + ") values (@user, @status, GETDATE(), GETDATE()"
             + ') select scope_identity() as id');
 
-            return res.recordset[0].id;
+            return res.recordset[0];
         }
         catch (err) {
             console.log(err);
             throw err;
         }
     }
-    async updateStatus(order, statusId) {
-        if (!order || !order.ID) return;
+    async updateStatus(id, statusId) {
+        if (id) return;
         try {
             var req = new mssql.Request(this.conn);
-            req.input("id", order.ID);
+            req.input("id", id);
             req.input("status", statusId);
 
             var ret = await req.query('update Zamowienie set Status=@status, Zmiana_statusu=GETDATE() where ID = @id');
