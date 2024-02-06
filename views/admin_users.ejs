@@ -1,0 +1,23 @@
+<%- include('head.ejs') %>
+</head>
+
+<body>
+    <%- include('navigation.ejs') %>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>E-mail</th>
+                <th>Hasło</th>
+            </tr>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.ID %></td>
+                    <td><%= user.Email %></td>
+                    <td><%= user.Haslo %></td>
+                </tr>
+            <% }) %>
+        </table>
+    </main>
+</body>
+</html>

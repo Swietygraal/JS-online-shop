@@ -1,0 +1,26 @@
+<%- include('head.ejs') %>
+</head>
+
+<body>
+    <%- include('navigation.ejs') %>
+    <main>
+        <h2><%= message %></h2>
+        <h1>Zaloguj się</h1>
+        <form action="/login" method="POST">
+            <h2>Adres e-mail:</h2>
+            <input type="email" value="email" id="email">
+            <h2>Hasło:</h2>
+            <input type="password" value="password" id="password">
+            <button class="button login" type="submit">Zaloguj</button>
+        </form>
+        <h1>Nie masz konta? Zarejestruj się!</h1>
+        <form action="/register" method="POST">
+            <h2>Adres e-mail:</h2>
+            <input type="email" value="email" id="email">
+            <h2>Hasło:</h2>
+            <input type="password" value="password" id="password">
+            <button class="button login" type="submit">Zarejestruj</button>
+        </form>
+    </main>
+</body>
+</html>

@@ -2,6 +2,7 @@
 var http = require('http');
 const express = require('express');
 let session = require('express-session')
+const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.urlencoded({extended: true}))
 const multer = require('multer');
@@ -27,6 +28,9 @@ const MaterialRepository = require('./database/repositories/MaterialRepository')
 const ModelRepository = require('./database/repositories/ModelRepository');
 const ProductRepository = require('./database/repositories/ProductRepository');
 const CartRepository = require('./database/repositories/CartRepository');
+const UserRepository = require('./database/repositories/UserRepository');
+const User_RoleRepository = require('./database/repositories/User_RoleRepository');
+const RoleRepository = require('./database/repositories/RoleRepository');
 
 var conn = new mssql.ConnectionPool(
   'server=localhost,1433;database=Piercingownia;user id=weppo;password=weppo; TrustServerCertificate=true');
@@ -36,6 +40,9 @@ var MatRepo = new MaterialRepository(conn);
 var ModRepo = new ModelRepository(conn);
 var ProdRepo = new ProductRepository(conn);
 var CartRepo = new CartRepository(conn);
+var UserRepo = new UserRepository(conn);
+var User_RoleRepo = new User_RoleRepository(conn);
+var RoleRepo = new RoleRepository(conn);
 
 async function main() {
   await conn.connect();
@@ -54,11 +61,9 @@ app.use(session({
 app.use((req, res, next) => {
   if (!req.session.account) {
     req.session.account = {
-      type: "guest"
+      user_role: ['guest'],
+      user_ID: 0
     }
-  }
-  if (!req.session.cart) {
-    req.session.cart = [];
   }
   next();
 })
@@ -69,7 +74,8 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/admin', async (req, res) => {
-  res.render('admin_panel');
+  if (req.session.user_role.includes('admin'))
+    res.render('admin_panel');
 })
 
 app.post('/admin/products', async (req, res) => {
@@ -210,6 +216,58 @@ app.post('/search', async (req, res) => {
   var products = await ProdRepo.search(q);
   (console.log(products));
   res.render('product_list', { products });
+});
+
+app.post('/admin/users', async (req, res) => {
+  var users = await UserRepo.retrieve();
+  res.render('admin_users', {users: users});
+});
+
+app.get('/account', async (req, res) => {
+  if (req.session.account.user_role.includes('guest'))
+    res.redirect('/login');
+  else
+    res.render('user_panel');
+});
+
+app.get('/login', async (req, res) => {
+  res.render('login', {message: ""});
+});
+
+app.post('/login', async (req, res) => {
+  var email = req.body.email;
+  var pwd = req.body.password;
+  var user = await UserRepo.retrieve_user(email);
+  if (user) {
+    if (bcrypt.compareSync(pwd, user.Haslo)) {
+      req.session.account.user_ID = user.ID;
+      req.session.account.user_role = [];
+      var roles = await User_RoleRepo.retrieve(user.ID);
+      for (let i = 0; i < roles.length; i++) {
+        var role = await RoleRepo.retrieve_role(roles[i].RoleID)
+        req.session.account.user_roles.push(role);
+      }
+      res.render('user_panel', {ID: user.ID});
+    } else res.render('login', {message: "Nieprawidłowe hasło"});
+  } else res.render('login', {message: "Użytkownik nie istnieje"});
+})
+
+app.post('/register', async (req, res) => {
+  var email = req.body.email;
+  var pwd = String(req.body.password);
+  var user = await UserRepo.retrieve_user(email);
+  if (!user) {
+    var salt = bcrypt.genSaltSync();
+    var hash = bcrypt.hashSync(pwd, salt);
+    console.log(hash);
+    var id = await UserRepo.insert(email, hash);
+    console.log(id);
+    req.session.account.user_ID = id;
+    var roleID = await RoleRepo.retrieve_ID("user");
+    await User_RoleRepo.insert(roleID, id);
+    req.session.account.user_role = ['user'];
+    res.render('user_panel');
+  } else res.render('login', {message: "Użytkownik już istnieje"});
 });
 
 app.listen(port, () => {
