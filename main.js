@@ -235,8 +235,8 @@ app.get('/login', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  var email = req.body.email;
-  var pwd = req.body.password;
+  var email = String(req.body.log_email);
+  var pwd = String(req.body.log_password);
   var user = await UserRepo.retrieve_user(email);
   if (user) {
     if (bcrypt.compareSync(pwd, user.Haslo)) {
@@ -245,7 +245,7 @@ app.post('/login', async (req, res) => {
       var roles = await User_RoleRepo.retrieve(user.ID);
       for (let i = 0; i < roles.length; i++) {
         var role = await RoleRepo.retrieve_role(roles[i].RoleID)
-        req.session.account.user_roles.push(role);
+        req.session.account.user_role.push(role);
       }
       res.render('user_panel', {ID: user.ID});
     } else res.render('login', {message: "Nieprawidłowe hasło"});
@@ -253,15 +253,13 @@ app.post('/login', async (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-  var email = req.body.email;
-  var pwd = String(req.body.password);
+  var email = String(req.body.reg_email);
+  var pwd = String(req.body.reg_password);
   var user = await UserRepo.retrieve_user(email);
   if (!user) {
     var salt = bcrypt.genSaltSync();
     var hash = bcrypt.hashSync(pwd, salt);
-    console.log(hash);
     var id = await UserRepo.insert(email, hash);
-    console.log(id);
     req.session.account.user_ID = id;
     var roleID = await RoleRepo.retrieve_ID("user");
     await User_RoleRepo.insert(roleID, id);
