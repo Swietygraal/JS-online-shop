@@ -74,7 +74,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/admin', async (req, res) => {
-  if (req.session.user_role.includes('admin'))
+  if (req.session.account.user_role.includes('admin'))
     res.render('admin_panel');
 })
 
@@ -227,7 +227,7 @@ app.get('/account', async (req, res) => {
   if (req.session.account.user_role.includes('guest'))
     res.redirect('/login');
   else
-    res.render('user_panel');
+    res.render('user_panel', {ID: req.session.account.user_ID});
 });
 
 app.get('/login', async (req, res) => {
@@ -264,9 +264,19 @@ app.post('/register', async (req, res) => {
     var roleID = await RoleRepo.retrieve_ID("user");
     await User_RoleRepo.insert(roleID, id);
     req.session.account.user_role = ['user'];
-    res.render('user_panel');
+    res.render('user_panel', {ID: id});
   } else res.render('login', {message: "Użytkownik już istnieje"});
 });
+
+/*
+app.get('/cart', async (req, res) => {
+  if (req.session.account.user_role.includes('guest'))
+    res.redirect('/login');
+  else {
+    var cart = await CartRepo.retrieve(req.session.account.user_ID);
+  }
+});
+*/
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
