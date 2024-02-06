@@ -351,15 +351,53 @@ app.post('/register', async (req, res) => {
   } else res.render('login', {message: "Użytkownik już istnieje"});
 });
 
-/*
+
 app.get('/cart', async (req, res) => {
   if (req.session.account.user_role.includes('guest'))
     res.redirect('/login');
   else {
     var cart = await CartRepo.retrieve(req.session.account.user_ID);
+    let total = 0;
+    for (let i = 0; i < cart.length; i++) {
+      total += cart[i].Cena * cart[i].Ilosc;
+    }
+    res.render('cart', {cart: cart, total: total});
   }
 });
-*/
+
+app.post('/cart_edit', async (req, res) => {
+  var id = req.body.productID;
+  var amount = req.body.amount;
+  var temp = await CartRepo.update(req.session.account.user_ID, id, amount);
+  var cart = await CartRepo.retrieve(req.session.account.user_ID);
+  let total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    total += cart[i].Cena * cart[i].Ilosc;
+  }
+  res.render('cart', {cart: cart, total: total});
+});
+
+app.post('/cart_delete', async (req, res) => {
+  var id = req.body.productID;
+  var temp = await CartRepo.delete(req.session.account.user_ID, id);
+  var cart = await CartRepo.retrieve(req.session.account.user_ID);
+  let total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    total += cart[i].Cena * cart[i].Ilosc;
+  }
+  res.render('cart', {cart: cart, total: total});
+});
+
+app.post('/cart_add', async (req, res) => {
+  var id = req.body.productID;
+  var temp = await CartRepo.insert(id, req.session.account.user_ID);
+  var cart = await CartRepo.retrieve(req.session.account.user_ID);
+  let total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    total += cart[i].Cena * cart[i].Ilosc;
+  }
+  res.render('cart', {cart: cart, total: total});
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

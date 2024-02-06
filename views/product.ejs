@@ -20,11 +20,10 @@
       <h2>
         <%= product.Nazwa %>
       </h2>
-      <a href="/cart">
-        <div class="cart-butt">
-          <p>DO KOSZYKA</p>
-        </div>
-      </a>
+      <form action="/cart_add" method="POST">
+        <input type="hidden" value="<%= product.ID %>" name="productID">
+        <button class="button add" type="submit">Do koszyka</button>
+      </form>
       <div class="product-details">
         <div class="grid-container">
           <div class="grid-item">

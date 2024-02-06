@@ -6,24 +6,39 @@
     <%- include('navigation.ejs') %>
     <main>
         <% if (cart && cart.length > 0) { %>
-            <ul class="cart-item-list">
+            <table>
+                <tr>
+                    <th>Zdjęcie</th>
+                    <th>Nazwa</th>
+                    <th>Cena</th>
+                    <th>Ilość</th>
+                    <th></th>
+                </tr>
                 <% cart.forEach(item => { %>
-                    <li class="cart-item">
-                        <img src=`${item.Zdjecie}` alt=`${item.Nazwa}`>
-                        <h1><%= item.Nazwa %></h1>
-                        <h2><%= item.Cena %></h2>
-                        <form action="/cart-delete-item" method="POST">
-                           <input type="hidden" value="<%= item.ID %>" name="productID">
-                           <button class="button delete" type="submit">Usuń</button>
-                        </form>
-                        <a href action="/order">
-                            <button class="button order">Złóż zamówienie</button>
-                        </a>
-                    </li>
+                    <tr>
+                        <td><img src="/uploads/<%= item.Zdjecie.substring(15) %>" alt="Product Image"></td>
+                        <td><%= item.Nazwa %></td>
+                        <td><%= item.Cena %></td>
+                        <td>
+                            <form action="/cart_edit" method="POST">
+                                <input type="hidden" value="<%= item.ID %>" name="productID">
+                                <input type="number" value="<%= item.Ilosc %>" name="amount">
+                                <button class="button edit" type="submit">Zmień</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/cart_delete" method="POST">
+                                <input type="hidden" value="<%= item.ID %>" name="productID">
+                                <button class="button delete" type="submit">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
                 <% }) %>
-            </ul>
+            </table>
             <h1>Suma: <%= total %></h1>
-            <%# TODO: checkout %>
+            <a href action="/order">
+                <button class="button order">Złóż zamówienie</button>
+            </a>
         <% } else { %>
             <div class="cart-empty">Twój koszyk jest pusty.</div>
         <% } %>
