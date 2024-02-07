@@ -100,7 +100,7 @@ app.get('/admin/products/add_product', async (req, res) => {
   });
 });
 
-app.post('/admin/orders', async (req, res) => {
+app.get('/admin/orders', async (req, res) => {
   var orders = await OrderRepo.retrieve();
   orders.forEach(o => {
     var user = UserRepo.retrieveID(o.Uzytkownik);
@@ -108,7 +108,8 @@ app.post('/admin/orders', async (req, res) => {
     var status = StatRepo.retrieveID(o.Status);
     o.status = status.Status;
   });
-  var statusy = StatRepo.retrieve();
+  var statusy = await StatRepo.retrieve();
+  console.log(statusy);
   res.render('admin_orders', {
     orders, statusy
   });
@@ -126,13 +127,18 @@ app.get('/account/orders', async (req, res) => {
 });
 
 app.get('/order', async (req, res) => {
-  var order;
-  var statusID = await StatRepo.retrieve('Zamówienie w realizacji');
-  order.user = req.session.account.user_id;
-  order.status = statusID;
-  order = await OrderRepo.insert(order);
-  order.Nazwa_statusu = 'Zamówienie w realizacji';
-  var products = await CartRepo.retrieve(req.session.account.user_id);
+  var order = {};
+  var status = await StatRepo.retrieve('Zamówienie w realizacji');
+  var statusID = status.ID;
+  console.log(statusID);
+  var user = req.session.account.user_ID;
+  console.log(user);
+  var orderId = await OrderRepo.insert(user, statusID);
+  console.log(orderId);
+  var order = await OrderRepo.retrieveID(orderId);
+  console.log(order);
+  var Nazwa_statusu = 'Zamówienie w realizacji';
+  var products = await CartRepo.retrieve(user);
   await OrderProdRepo.insert(products, orderId);
   products.forEach(async p => {
     var amount = p.Ilosc;
@@ -140,7 +146,7 @@ app.get('/order', async (req, res) => {
     p.Ilosc = amount;
   });
   res.render('order', {
-    order, products
+    order, products, Nazwa_statusu
   });
 });
 
@@ -163,6 +169,8 @@ app.get('/order/:id', async (req, res) => {
 app.post('/status_change/:id', async (req, res) => {
   var orderId = req.params.id;
   var statusId = await StatRepo.retrieve(req.body.status);
+  console.log(req.body.status);
+  console.log(statusId);
   await OrderRepo.updateStatus(orderId, statusId);
 
   var orders = await OrderRepo.retrieve();
@@ -172,7 +180,7 @@ app.post('/status_change/:id', async (req, res) => {
     var status = StatRepo.retrieveID(o.Status);
     o.status = status.Status;
   });
-  var statusy = StatRepo.retrieve();
+  var statusy = await StatRepo.retrieve();
   res.render('admin_orders', {
     orders, statusy
   });

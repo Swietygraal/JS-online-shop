@@ -9,6 +9,8 @@ main {
 }
 
 table {
+    position: absolute;
+    top: 150px;
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -47,6 +49,7 @@ a:hover {
 }
 
 .button {
+    
     background-color: #DBAE26;
     color: white;
     border: none;

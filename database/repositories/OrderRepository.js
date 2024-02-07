@@ -31,7 +31,7 @@ class OrderRepository {
     async retrieveUser(userId) {
         try {
             var req = new mssql.Request(this.conn);
-            if (id) req.input('id', userId);
+            if (userId) req.input('id', userId);
             else return;
             var res = await req.query('select * from Zamowienie where Uzytkownik = @id');
             return res.recordset;
@@ -63,19 +63,19 @@ class OrderRepository {
             return [];
         }
     }
-    async insert(order) {
-        if (!order || !order.user || !order.status) return;
+    async insert(user, status) {
+        if (!user || !status) return;
         try {
             var req = new mssql.Request(this.conn);
-            req.input("user", order.user);
-            req.input("status", order.status);
+            req.input("user", user);
+            req.input("status", status);
            // req.input("date", order.date);
 
             var res = await req.query('insert into Zamowienie (Uzytkownik, Status, Data_zlozenia, Zmiana_statusu'
             + ") values (@user, @status, GETDATE(), GETDATE()"
             + ') select scope_identity() as id');
 
-            return res.recordset[0];
+            return res.recordset[0].id;
         }
         catch (err) {
             console.log(err);

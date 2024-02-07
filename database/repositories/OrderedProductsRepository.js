@@ -17,7 +17,7 @@ class OrderedProductsRepository {
                 + ') select scope_identity() as id');
             });
 
-            return res.recordset[0].id;
+            return;
         }
         catch (err) {
             console.log(err);

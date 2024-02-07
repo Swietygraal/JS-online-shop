@@ -1,20 +1,21 @@
 <%- include('head.ejs') %>
-<link rel="stylesheet" href="/css/admin_panel.css">
-</head>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    </head>
 
-<body>
-    <%- include('navigation.ejs') %>
-    <main>
-        <form action="/admin/products" method="POST">
-            <button class="button products" type="submit">Produkty</button>
-        </form>
-        <form action="/admin/users" method="POST">
-            <button class="button users" type="submit">Użytkownicy</button>
-        </form>
-        <form action="/admin/orders" action="POST">
-            <button class="button orders" type="submit">Zamówienia</button>
-        </form>
-        <%# <p><a href="/settings">Ustawienia</a></p> %>
-    </main>
-</body>
-</html>
+    <body>
+        <%- include('navigation.ejs') %>
+            <main>
+                <form action="/admin/products" method="POST">
+                    <button class="button products" type="submit">Produkty</button>
+                </form>
+                <form action="/admin/users" method="POST">
+                    <button class="button users" type="submit">Użytkownicy</button>
+                </form>
+                <a href="/admin/orders">
+                    <button>Zamówienia</button>
+                </a>
+                <%# <p><a href="/settings">Ustawienia</a></p> %>
+            </main>
+    </body>
+
+    </html>
