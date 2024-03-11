@@ -5,4 +5,68 @@
     margin-top: 200px;
 }
 
-/* TODO: css dla koszyka z produktami */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #DBAE26;
+}
+
+th {
+    background-color: #DBAE26;
+    color: white;
+}
+
+tr:hover {
+    background-color: #DBAE26;
+    color: white;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #DBAE26;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #C48F0A;
+}
+
+.button.edit {
+    background-color: #007bff;
+}
+
+.button.delete {
+    background-color: #dc3545;
+}
+
+.button.order {
+    background-color: #28a745;
+}
+
+.cart-empty {
+    margin-top: 20px;
+    font-size: 18px;
+}

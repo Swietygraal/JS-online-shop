@@ -9,7 +9,7 @@ class CartRepository {
             var req = new mssql.Request(this.conn);
             if (userID) req.input('userID', userID);
             else return;
-            var res = await req.query('select Koszyk.ID, Produkt.Zdjecie, Produkt.Nazwa, Produkt.Cena, Koszyk.Ilosc from Koszyk JOIN Produkt ON Koszyk.ProductID = Produkt.ID WHERE UserID = @userID');
+            var res = await req.query('select Produkt.ID, Produkt.Zdjecie, Produkt.Nazwa, Produkt.Cena, Koszyk.Ilosc from Koszyk JOIN Produkt ON Koszyk.ProductID = Produkt.ID WHERE UserID = @userID');
             return res.recordset;
         }
         catch (err) {

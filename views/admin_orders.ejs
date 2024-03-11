@@ -27,6 +27,7 @@
                                 <%= item.Data_zlozenia %>
                             </td>
                             <td>
+                                <form action="/status_change/<%= item.ID %>" method="Post">
                                 <select name="status" id="status">
                                     <% statusy.forEach(s=> { %>
                                         <option value="<%= s.Status %>" <% (s.Status==item.status) ? "selected" : ''
@@ -40,7 +41,7 @@
                                 <%= item.Zmiana_statusu %>
                             </td>
                             <td>
-                                <form action="/status_change/<%= item.ID %>" method="Post">
+                               
                                     <button type="submit">Zapisz</button>
                                 </form>
                             </td>

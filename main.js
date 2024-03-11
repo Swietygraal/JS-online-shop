@@ -1,4 +1,3 @@
-// index.js
 var http = require('http');
 const express = require('express');
 let session = require('express-session')
@@ -117,9 +116,11 @@ app.get('/admin/orders', async (req, res) => {
 
 app.get('/account/orders', async (req, res) => {
   var orders = await OrderRepo.retrieveUser(req.session.account.user_ID);
-  orders.forEach(o => {
-    var status = StatRepo.retrieveID(o.Status);
+  orders.forEach(async o => {
+    var status = await StatRepo.retrieveID(o.Status);
     o.status = status.Status;
+    var user = await UserRepo.retrieveID(o.Uzytkownik);
+    o.user = user.Email;
   });
   res.render('account_orders', {
     orders
@@ -130,21 +131,16 @@ app.get('/order', async (req, res) => {
   var order = {};
   var status = await StatRepo.retrieve('Zamówienie w realizacji');
   var statusID = status.ID;
-  console.log(statusID);
   var user = req.session.account.user_ID;
-  console.log(user);
   var orderId = await OrderRepo.insert(user, statusID);
-  console.log(orderId);
   var order = await OrderRepo.retrieveID(orderId);
-  console.log(order);
   var Nazwa_statusu = 'Zamówienie w realizacji';
   var products = await CartRepo.retrieve(user);
+  console.log(products);
   await OrderProdRepo.insert(products, orderId);
   products.forEach(async p => {
-    var amount = p.Ilosc;
-    p = await ProdRepo.retrieveID(p.ProductID);
-    p.Ilosc = amount;
-  });
+    await CartRepo.delete(user, p.ID);
+  })
   res.render('order', {
     order, products, Nazwa_statusu
   });
@@ -168,17 +164,24 @@ app.get('/order/:id', async (req, res) => {
 
 app.post('/status_change/:id', async (req, res) => {
   var orderId = req.params.id;
-  var statusId = await StatRepo.retrieve(req.body.status);
+  var statusId;
+  var status;
+  console.log("plamkajaka");
+  console.log(req.body);
+  status = await StatRepo.retrieve(req.body.status);
+  statusId = status.ID;
+  console.log("tereferekuku");
   console.log(req.body.status);
   console.log(statusId);
   await OrderRepo.updateStatus(orderId, statusId);
 
   var orders = await OrderRepo.retrieve();
-  orders.forEach(o => {
-    var user = UserRepo.retrieveID(o.Uzytkownik);
+  orders.forEach(async o => {
+    var user = await UserRepo.retrieveID(o.Uzytkownik);
     o.user = user.Email;
-    var status = StatRepo.retrieveID(o.Status);
+    var status = await StatRepo.retrieveID(o.Status);
     o.status = status.Status;
+    console.log(o);
   });
   var statusy = await StatRepo.retrieve();
   res.render('admin_orders', {
@@ -208,7 +211,7 @@ app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
   var productId = req.params.id;
   var product = await ProdRepo.retrieveID(productId);
   product.Nazwa = req.body.name ? req.body.name : product.Nazwa;
-  product.Cena = req.body.pric ? parseFloat(req.body.price) : product.Cena;
+  product.Cena = req.body.price ? parseFloat(req.body.price) : product.Cena;
   product.Stan = req.body.stock ? parseInt(req.body.stock) : product.Stan;
   product.Opis = req.body.description;
   product.Grubosc = parseFloat(req.body.thickness);
@@ -217,7 +220,7 @@ app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
   var model = await ModRepo.retrieve(req.body.model);
   product.Model = model.ID;
   var selectedModel = model.Model;
-  var material = await MatRepo.retrieve(req.body.materiale);
+  var material = await MatRepo.retrieve(req.body.material);
   product.Material = material.ID;
   var selectedMaterial = material.Material;
   var category = await CategRepo.retrieve(req.body.category);
