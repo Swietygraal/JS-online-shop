@@ -44,7 +44,8 @@ class OrderRepository {
     async getStatus(id) {
         try {
             var req = new mssql.Request(this.conn);
-            var res = await req.query('select Statusy.Status from Zamowienie JOIN Statusy on Zamowienie.Status = Statusy.ID');
+            if (id) req.input('id', id);
+            var res = await req.query('select Statusy.Status from Zamowienie JOIN Statusy on Zamowienie.Status = Statusy.ID where Zamowienie.ID = @id');
             return res.recordset[0] ? res.recordset[0].Status : res.recordset[0];
         }
         catch (err) {
@@ -55,7 +56,8 @@ class OrderRepository {
     async getOrderProducts(id) {
         try {
             var req = new mssql.Request(this.conn);
-            var res = await req.query('select [Ordered Products].ProductID, [Ordered Products].Ilosc from Zamowienie JOIN [Ordered Products] on Zamowienie.ID = [Ordered Products].OrderID');
+            if (id) req.input('id', id);
+            var res = await req.query('select Produkt.ID, [Ordered_Products].Ilosc, Produkt.Nazwa, Produkt.Cena, Produkt.Zdjecie from Zamowienie JOIN [Ordered_Products] on Zamowienie.ID = [Ordered_Products].OrderID JOIN Produkt on Produkt.ID = Ordered_Products.ProductID where Zamowienie.ID = @id');
             return res.recordset;
         }
         catch (err) {
@@ -83,7 +85,7 @@ class OrderRepository {
         }
     }
     async updateStatus(id, statusId) {
-        if (id) return;
+        if (!id) return;
         try {
             var req = new mssql.Request(this.conn);
             req.input("id", id);

@@ -1,11 +1,12 @@
 <%- include('head.ejs') %>
-<link rel="stylesheet" href="/css/admin_orders.css">
+    <link rel="stylesheet" href="/css/admin_orders.css">
     </head>
 
     <body>
         <%- include('navigation.ejs') %>
             <main>
                 <table>
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Użytkownik</th>
@@ -15,38 +16,42 @@
                         <th></th>
                         <th></th>
                     </tr>
+                </thead>
+                <tbody>
                     <% orders.forEach(item=> { %>
-                        <tr href="/order/<%= item.ID %>">
-                            <td>
-                                <%= item.ID %>
-                            </td>
-                            <td>
-                                <%= item.user %>
-                            </td>
-                            <td>
-                                <%= item.Data_zlozenia %>
-                            </td>
-                            <td>
-                                <form action="/status_change/<%= item.ID %>" method="Post">
-                                <select name="status" id="status">
-                                    <% statusy.forEach(s=> { %>
-                                        <option value="<%= s.Status %>" <% (s.Status==item.status) ? "selected" : ''
-                                            %>>
-                                            <%= s.Status %>
-                                        </option>
-                                        <% }); %>
-                                </select>
-                            </td>
-                            <td>
-                                <%= item.Zmiana_statusu %>
-                            </td>
-                            <td>
-                               
+                        <form action="/status_change/<%= item.ID %>" method="Post">
+                            <tr onclick="window.location='/order/<%= item.ID %>'">
+                                <td>
+                                    <%= item.ID %>
+                                </td>
+                                <td>
+                                    <%= item.user %>
+                                </td>
+                                <td>
+                                    <%= item.Data_zlozenia %>
+                                </td>
+                                <td>
+
+                                    <select name="status" id="status">
+                                        <% statusy.forEach(s=> { %>
+                                            <option value="<%= s.Status %>" <%=s.ID===item.Status ? 'selected' : ''
+                                                %>>
+                                                <%= s.Status %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </td>
+                                <td>
+                                    <%= item.Zmiana_statusu %>
+                                </td>
+                                <td>
+
                                     <button type="submit">Zapisz</button>
-                                </form>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        </form>
                         <% }) %>
+                    </tbody>
                 </table>
             </main>
     </body>

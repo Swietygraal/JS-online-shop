@@ -38,7 +38,7 @@
               <select name="category" id="category">
                 <option></option>
                 <% categories.forEach(c=> { %>
-                  <option value="<%= c.Kategoria %>" <% (c.Kategoria==selectedCategory) ? "selected" : '' %>>
+                  <option value="<%= c.Kategoria %>" <%=c.Kategoria===selectedCategory ? 'selected' : '' %>>
                     <%= c.Kategoria %>
                   </option>
                   <% }); %>
@@ -47,7 +47,7 @@
               <select name="model" id="model">
                 <option></option>
                 <% models.forEach(m=> { %>
-                  <option>
+                  <option value="<%= m.Model %>" <%=m.Model===selectedModel ? 'selected' : '' %>>
                     <%= m.Model %>
                   </option>
                   <% }); %>
@@ -56,7 +56,7 @@
               <select name="material" id="material">
                 <option></option>
                 <% materials.forEach(m=> { %>
-                  <option>
+                  <option value="<%= m.Material %>" <%=m.Material===selectedMaterial ? 'selected' : '' %>>
                     <%= m.Material %>
                   </option>
                   <% }); %>
@@ -65,7 +65,7 @@
               <select name="color" id="color">
                 <option></option>
                 <% colors.forEach(c=> { %>
-                  <option>
+                  <option value="<%= c.Kolor %>" <%=c.Kolor===selectedColor ? 'selected' : '' %>>
                     <%= c.Kolor %>
                   </option>
                   <% }); %>
@@ -74,7 +74,7 @@
               <select name="zirc_color" id="zirc_color">
                 <option></option>
                 <% colors.forEach(c=> { %>
-                  <option>
+                  <option value="<%= c.Kolor %>" <%=c.Kolor===selectedZirc_color ? 'selected' : '' %>>
                     <%= c.Kolor %>
                   </option>
                   <% }); %>

@@ -101,10 +101,10 @@ app.get('/admin/products/add_product', async (req, res) => {
 
 app.get('/admin/orders', async (req, res) => {
   var orders = await OrderRepo.retrieve();
-  orders.forEach(o => {
-    var user = UserRepo.retrieveID(o.Uzytkownik);
+  orders.forEach(async o => {
+    var user = await UserRepo.retrieveID(o.Uzytkownik);
     o.user = user.Email;
-    var status = StatRepo.retrieveID(o.Status);
+    var status = await StatRepo.retrieveID(o.Status);
     o.status = status.Status;
   });
   var statusy = await StatRepo.retrieve();
@@ -149,14 +149,11 @@ app.get('/order', async (req, res) => {
 app.get('/order/:id', async (req, res) => {
   var orderId = req.params.id;
   var order;
+  var nazwa;
   order = await OrderRepo.retrieveID(orderId);
-  order.Nazwa_statusu = await StatRepo.retrieveID(order.Status);
+  nazwa =  await StatRepo.retrieveID(order.Status);
+  order.Nazwa_statusu = nazwa.Status;
   var products = await OrderRepo.getOrderProducts(orderId);
-  products.forEach(async p => {
-    var amount = p.Ilosc;
-    p = await ProdRepo.retrieveID(p.ProductID);
-    p.Ilosc = amount;
-  });
   res.render('order', {
     order, products
   });
@@ -166,22 +163,15 @@ app.post('/status_change/:id', async (req, res) => {
   var orderId = req.params.id;
   var statusId;
   var status;
-  console.log("plamkajaka");
-  console.log(req.body);
   status = await StatRepo.retrieve(req.body.status);
   statusId = status.ID;
-  console.log("tereferekuku");
-  console.log(req.body.status);
-  console.log(statusId);
   await OrderRepo.updateStatus(orderId, statusId);
 
   var orders = await OrderRepo.retrieve();
   orders.forEach(async o => {
     var user = await UserRepo.retrieveID(o.Uzytkownik);
     o.user = user.Email;
-    var status = await StatRepo.retrieveID(o.Status);
-    o.status = status.Status;
-    console.log(o);
+    o.Nazwa_statusu = await StatRepo.retrieveID(o.Status);
   });
   var statusy = await StatRepo.retrieve();
   res.render('admin_orders', {
@@ -197,10 +187,12 @@ app.get('/edit_product/:id', async (req, res) => {
   var productId = req.params.id;
   var product = await ProdRepo.retrieveID(productId);
   var selectedCategory = await ProdRepo.getCategory(productId);
+  var sel_cat = selectedCategory;
   var selectedColor = await ProdRepo.getColor(productId);
   var selectedMaterial = await ProdRepo.getMaterial(productId);
   var selectedModel = await ProdRepo.getModel(productId);
   var selectedZirc_color = await ProdRepo.getZircColor(productId);
+  console.log("sel_cat: " + sel_cat);
   res.render('edit_product', {
     categories, colors, materials, models, product, selectedCategory, 
     selectedColor, selectedMaterial, selectedModel, selectedZirc_color
@@ -229,7 +221,7 @@ app.post('/edit_product/:id', upload.single('photo'), async (req, res) => {
   var color = await ClrRepo.retrieve(req.body.color);
   product.Kolor = color.ID;
   var selectedColor = color.Kolor;
-  var zirc_color = await ClrRepo.retrieve(req.body.zircColor);
+  var zirc_color = await ClrRepo.retrieve(req.body.zirc_color);
   product["Kolor Cyrkonii"] = zirc_color.ID;
   var selectedZirc_color = zirc_color.Kolor;
 
@@ -301,6 +293,7 @@ app.get('/produkt/:id', async (req, res) => {
   var material = await ProdRepo.getMaterial(productId);
   var model = await ProdRepo.getModel(productId);
   var zirc_color = await ProdRepo.getZircColor(productId);
+  console.log(zirc_color);
   res.render('product', { product, category, color, material, model, zirc_color });
 });
 

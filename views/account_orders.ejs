@@ -15,22 +15,20 @@
                         <th></th>
                     </tr>
                     <% orders.forEach(item=> { %>
-                        <a href="/order/<%= item.ID %>">
-                            <tr>
-                                <td>
-                                    <%= item.ID %>
-                                </td>
-                                <td>
-                                    <%= item.Data_zlozenia %>
-                                </td>
-                                <td>
-                                    <%= item.status %>
-                                </td>
-                                <td>
-                                    <%= item.Zmiana_statusu %>
-                                </td>
-                            </tr>
-                        </a>
+                        <tr onclick="window.location='/order/<%= item.ID %>'">
+                            <td>
+                                <%= item.ID %>
+                            </td>
+                            <td>
+                                <%= item.Data_zlozenia %>
+                            </td>
+                            <td>
+                                <%= item.status %>
+                            </td>
+                            <td>
+                                <%= item.Zmiana_statusu %>
+                            </td>
+                        </tr>
                         <% }) %>
                 </table>
             </main>

@@ -13,7 +13,7 @@
                 Złożone <%= order.Data_zlozenia %>
             </h2>
             <h2 id="status">
-                Status zamówienia: <%= Nazwa_statusu %> (od <%= order.Zmiana_statusu %>)
+                Status zamówienia: <%= order.Nazwa_statusu %> (od <%= order.Zmiana_statusu %>)
             </h2>
           </section>
           <div class="product-list">
@@ -23,7 +23,6 @@
             <% products.forEach(product => { %>
               <a href="/produkt/<%= product.ID %>">
                 <div class="product-container">
-                  <%= console.log(product.Zdjecie.substring(15)); %>
                   <img src="/uploads/<%= product.Zdjecie.substring(15) %>">
                   <h2 id="nazwa">
                     <%= product.Nazwa %>
