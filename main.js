@@ -187,12 +187,10 @@ app.get('/edit_product/:id', async (req, res) => {
   var productId = req.params.id;
   var product = await ProdRepo.retrieveID(productId);
   var selectedCategory = await ProdRepo.getCategory(productId);
-  var sel_cat = selectedCategory;
   var selectedColor = await ProdRepo.getColor(productId);
   var selectedMaterial = await ProdRepo.getMaterial(productId);
   var selectedModel = await ProdRepo.getModel(productId);
   var selectedZirc_color = await ProdRepo.getZircColor(productId);
-  console.log("sel_cat: " + sel_cat);
   res.render('edit_product', {
     categories, colors, materials, models, product, selectedCategory, 
     selectedColor, selectedMaterial, selectedModel, selectedZirc_color

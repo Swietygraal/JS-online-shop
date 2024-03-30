@@ -1,37 +1,18 @@
 #logo {
-    width: 17%;
-    height: auto;
-    position: absolute;
-    left: 10%;
-    top: 7%;
-}
-
-#admin {
-    width: 30px;
-    height: auto;
+    width: auto;
+    height: 40px;
     position: relative;
 }
 
-#cart {
-    width: 30px;
-    height: auto;
-    /*position: relative;*/
-}
-
-#account {
-    width: 30px;
-    height: auto;
-    /*position: relative;*/
-}
-
-
 .search-container {
+    display: flex;
     text-align: center;
   }
   
   .search-container form {
     display: flex;
     justify-content: center;
+    gap: 10px;
   }
   
   .search-container input[type="text"] {
@@ -51,14 +32,31 @@
   }
 
 nav {
-    position: absolute;
-    top: 4.5%; 
-    left: 65%;
+    position: relative;
+    padding: 20px 60px;
+    height: 60px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
 }
 
 nav ul {
+    height:100%;
     list-style-type: none;
-    margin-right: 10px;
-    padding: 10;
+    align-items: center;
     display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+  align-items: center;
+  height: 100%;
+  display: flex;
+}
+
+nav ul li img {
+  max-width: 30px;
+  max-height: 100%;
 }
